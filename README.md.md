@@ -11,3 +11,4 @@ Node.js
 OpenSpec
 Xano
 
+## Status do Projeto: Conectado ao Xano com Sucesso!
