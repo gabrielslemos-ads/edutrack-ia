@@ -1,5 +1,3 @@
-streamlit
-requests
 # Instruções para Agentes de IA - EduTrack AI
 
 🚨 **PRIORIDADE ABSOLUTA - LEIA PRIMEIRO** 🚨
@@ -164,7 +162,7 @@ Este arquivo contém:
 **❌ Erros mais comuns que causam falha na validação:**
 
 1. **Localização do arquivo determina o formato**
-   - ❌ Usar `## Requirements` em `openspec/changes/<id>/specs/capability/spec.md`
+   - ❌ Usar `## Requirements` em `openspec/changes/&lt;id&gt;/specs/capability/spec.md`
    - ✅ Usar `## ADDED Requirements` em changes/ (são DELTAS, não specs finais)
    - ✅ Usar `## Requirements` apenas em `openspec/specs/capability/spec.md` (specs permanentes)
 
@@ -181,7 +179,7 @@ Este arquivo contém:
    - ❌ Scenario em texto corrido
    - ✅ Todo requirement TEM ≥1 scenario com bullets **WHEN**/**THEN**
 
-**Estrutura para arquivos em openspec/changes/<id>/specs/capability/spec.md:**
+**Estrutura para arquivos em openspec/changes/&lt;id&gt;/specs/capability/spec.md:**
 
     # capability-name Specification
     
