@@ -1,18 +1,16 @@
-# Proposta: API CRUD para Disciplinas (Subjects)
+# Proposta: Endpoint de Busca para Disciplinas
 
 ## Why
-Atualmente, não existe uma forma padronizada via API para que os usuários gerenciem suas disciplinas (subjects). A criação de endpoints CRUD é fundamental para permitir que a aplicação frontend possa criar, listar, atualizar e deletar os registros de disciplinas de forma segura e desacoplada.
+Atualmente, o usuário pode apenas listar todas as suas disciplinas. Não há uma maneira eficiente de encontrar uma disciplina específica por nome ou de identificar rapidamente quais disciplinas exigem atenção imediata (por terem tarefas atrasadas). Um endpoint de busca avançada é necessário para melhorar a usabilidade e o gerenciamento das responsabilidades acadêmicas.
 
 ## What Changes
-Esta mudança introduz um conjunto completo de endpoints RESTful para o gerenciamento de disciplinas.
+Esta mudança introduz um novo endpoint de API para busca e filtragem de disciplinas.
 
-1.  **Novos Endpoints de API:** Serão criados os seguintes endpoints no Xano:
-    - `POST /subjects`: Para criar uma nova disciplina.
-    - `GET /subjects`: Para listar as disciplinas do usuário autenticado.
-    - `PATCH /subjects/{id}`: Para atualizar uma disciplina específica.
-    - `DELETE /subjects/{id}`: Para deletar uma disciplina específica.
+1.  **Novo Endpoint (`GET /subjects/search`):** Será criado um endpoint que permite filtrar disciplinas com base em dois critérios:
+    - `name`: Para buscar disciplinas por parte do nome.
+    - `has_overdue_tasks`: Para filtrar disciplinas que contenham tarefas com data de entrega vencida e status diferente de "completed".
 
 ## Impact
-- **Backend:** O backend Xano será estendido com novos endpoints. A lógica de cada endpoint deverá implementar uma verificação de segurança para garantir que um usuário só possa manipular suas próprias disciplinas.
-- **Frontend:** Habilita o desenvolvimento de funcionalidades completas de gerenciamento de disciplinas na interface do Streamlit.
-- **Segurança:** A implementação correta do filtro por `user_id` em todos os endpoints é crítica para garantir a privacidade e a segurança dos dados dos usuários.
+- **Backend:** Será adicionada uma nova API no Xano com lógica de consulta mais complexa, envolvendo a verificação cruzada entre as tabelas `subjects` e `academic_tasks`. A integração com lógica Python pode ser necessária se a consulta se tornar muito complexa para ser executada nativamente no Xano.
+- **Frontend:** Habilita a criação de uma interface de busca e filtro na aplicação Streamlit, permitindo que os usuários encontrem disciplinas de forma mais dinâmica.
+- **Segurança:** O endpoint deverá garantir rigorosamente que todas as consultas retornem apenas dados pertencentes ao usuário autenticado.
