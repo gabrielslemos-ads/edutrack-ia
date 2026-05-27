@@ -1,27 +1,46 @@
-
 import streamlit as st
+import requests
 
-# LISTAR DISCIPLINAS
-from services.xano import get_subjects
+st.title("EduTrack - Disciplinas")
 
-subjects = get_subjects()
+# Campo de busca
+nome_disciplina = st.text_input("Buscar disciplina")
 
-# TRATAMENTO DE ERRO
-if isinstance(subjects, dict) and "error" in subjects:
+# Botão
+if st.button("Buscar"):
 
-    st.error(subjects["error"])
+    # URL da API
+    url = "https://x8ki-letl-twmt.n7.xano.io/api:gwA9KAfL/search"
 
-# SE EXISTIREM DISCIPLINAS
-elif subjects:
+    # Dados enviados
+    params = {
+        "name": nome_disciplina,
+        "has_overdue_tasks": False
+    }
 
-    st.subheader("Lista de Disciplinas")
+    # Token
+    headers = {
+        "Authorization": "Bearer SEU_TOKEN_AQUI"
+    }
 
-    st.dataframe(
-        subjects,
-        use_container_width=True
-    )
+    # Requisição
+    response = requests.get(url, params=params, headers=headers)
 
-# SE NÃO EXISTIR NADA
-else:
+    # Resultado
+    if response.status_code == 200:
+        disciplinas = response.json()
 
-    st.write("Nenhuma disciplina encontrada.")
+        if disciplinas:
+            for d in disciplinas:
+                st.success(f"""
+                📚 {d['name']}
+                
+                👨‍🏫 Professor: {d['professor']}
+                
+                ⏰ Carga Horária: {d['carga_horaria']}
+                """)
+        else:
+            st.warning("Nenhuma disciplina encontrada.")
+
+    else:
+        st.error("Erro ao buscar disciplinas.")
