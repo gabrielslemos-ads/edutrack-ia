@@ -70,17 +70,13 @@ if aba == "Login":
             st.session_state.auth_token = dados["authToken"]
             st.session_state.usuario_id = dados["user_id"]
 
-            st.success("Login realizado com sucesso!")
+            st.success("✅ Login realizado com sucesso!")
 
-            st.page_link(
-                "home.py",
-                label="Ir para Home",
-                icon="🏠"
-            )
+            st.switch_page("Home.py")
 
         else:
 
-            st.error("Email ou senha inválidos.")
+            st.error("❌ Email ou senha inválidos.")
 
 # ====================================
 # CRIAR CONTA
@@ -92,6 +88,7 @@ if aba == "Criar Conta":
 
     nome = st.text_input("Nome")
     novo_email = st.text_input("Novo Email")
+
     nova_senha = st.text_input(
         "Nova Senha",
         type="password"
@@ -110,6 +107,8 @@ if aba == "Criar Conta":
             json=payload
         )
 
+        st.write(response.text)
+
         if response.status_code == 200:
 
             dados = response.json()
@@ -117,14 +116,10 @@ if aba == "Criar Conta":
             st.session_state.auth_token = dados["authToken"]
             st.session_state.usuario_id = dados["user_id"]
 
-            st.success("Conta criada com sucesso!")
+            st.success("✅ Conta criada com sucesso!")
 
-            st.page_link(
-                "home.py",
-                label="Ir para Home",
-                icon="🏠"
-            )
+            st.switch_page("Home.py")
 
         else:
 
-            st.error("Erro ao criar conta.")
+            st.error("❌ Erro ao criar conta.")

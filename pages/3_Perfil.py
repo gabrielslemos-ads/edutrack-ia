@@ -1,43 +1,64 @@
 import streamlit as st
+import requests
+
+# ====================================
+# CONFIG
+# ====================================
+
+ME_URL = "https://x8ki-letl-twmt.n7.xano.io/api:CbFADjgb/auth/me"
 
 st.set_page_config(
     page_title="Perfil",
-    page_icon="👤"
+    page_icon="👤",
+    layout="centered"
 )
 
-st.title("👤 Meu Perfil")
+# =========================================
+# VALIDA LOGIN
+# =========================================
 
-st.subheader("Informações do Usuário")
+if "auth_token" not in st.session_state:
+    st.session_state.auth_token = None
 
-with st.form("form_perfil"):
+if not st.session_state.auth_token:
+    st.warning("Faça login para acessar esta página.")
+    st.stop()
 
-    nome = st.text_input(
-        "Nome Completo",
-        value="Gabriel da Silva Lemos"
-    )
+# ====================================
+# HEADER TOKEN
+# ====================================
 
-    email = st.text_input(
-        "E-mail",
-        value="gabriel@email.com"
-    )
+headers = {
+    "Authorization": f"Bearer {st.session_state.auth_token}"
+}
 
-    senha = st.text_input(
-        "Nova Senha",
-        type="password"
-    )
+# ====================================
+# REQUEST
+# ====================================
 
-    salvar = st.form_submit_button(
-        "Salvar Alterações"
-    )
-
-    if salvar:
-
-        st.success(
-            "Perfil atualizado com sucesso!"
-        )
-
-st.markdown("---")
-
-st.info(
-    "Aqui futuramente ficará a integração com autenticação do Xano."
+response = requests.get(
+    ME_URL,
+    headers=headers
 )
+
+# ====================================
+# TELA
+# ====================================
+
+st.title("👤 Perfil")
+
+if response.status_code == 200:
+
+    dados = response.json()
+
+    st.success("Usuário autenticado!")
+
+    st.subheader("Informações do Usuário")
+
+    st.write(f"Nome: {dados.get('name')}")
+    st.write(f"Email: {dados.get('email')}")
+    st.write(f"ID: {dados.get('id')}")
+
+else:
+
+    st.error("Erro ao carregar perfil.")
